@@ -5,16 +5,27 @@ import { Aluno } from './aluno';
 @Injectable()
 export class AlunoService {
   alunos: Aluno[] = [];
-  
-  gravar(aluno: Aluno): Aluno | null {
-    var result = null;
+
+  criar(aluno: Aluno): Aluno | null {
+    aluno = aluno.clone();
+    var result: Aluno | null = null;;
     if (this.cpfNaoCadastrado(aluno.cpf)) {
       this.alunos.push(aluno);
       result = aluno;
     }
     return result;
   }
+
   cpfNaoCadastrado(cpf: string): boolean {
      return !this.alunos.find(a => a.cpf == cpf);
+  }
+
+  atualizar(aluno:Aluno): void {
+    aluno = aluno.clone();
+    for (let a of this.alunos) {
+        if (a.cpf == aluno.cpf) {
+           a.metas = aluno.metas;
+        }
+    }
   }
 }
