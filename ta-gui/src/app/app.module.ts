@@ -5,34 +5,25 @@ import { RouterModule }   from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { MetasComponent } from './metas.component';
-import { AlunosComponent } from './alunos.component';
-import { AlunoService } from './aluno.service';
+import { AppComponent } from "./app.component";
+import { AlunosComponent } from "./alunos.component";
+import { AlunoService } from "./aluno.service";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    MetasComponent,
-    AlunosComponent
-  ],
+  declarations: [AppComponent, AlunosComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule, 
+    HttpClientModule,
     RouterModule.forRoot([
       {
-        path: 'metas',
-        component: MetasComponent
+        path: "alunos",
+        component: AlunosComponent,
       },
-      {
-        path: 'alunos',
-        component: AlunosComponent
-      }
-    ])
+    ]),
   ],
   providers: [AlunoService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

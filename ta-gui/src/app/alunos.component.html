@@ -1,35 +1,33 @@
-<html (mousemove)="onMove()">
+<form (ngSubmit)="cadastrarAluno(aluno)">
+  <div>
+  <label htmlFor="nome_input">Nome</label>
+  <input name="nome" required [(ngModel)]="aluno.nome" id="nome_input" />
+</div>
 
-  <table>
- <tr>
-    <td><label>Nome </label></td>
-    <td><input [(ngModel)]="aluno.nome" name="namebox"></td>
-    <td><button (click)="criarAluno(aluno)">Adicionar</button></td>
- </tr>
- <tr>
-    <td><label>CPF </label></td>
-    <td><input [(ngModel)]="aluno.cpf" name="cpfbox"></td>
-    <td name="msgcpfexistente" *ngIf="cpfduplicado">
-      Já existe um aluno com esse CPF
-    </td>
- </tr>
- <tr>
-    <td><label>e-mail </label></td>
-    <td><input [(ngModel)]="aluno.email" ></td>
- </tr>
- </table>
+<div>
+  <label htmlFor="cpf_input">CPF</label>
+  <input name="cpf" required [(ngModel)]="aluno.cpf" id="cpf_input" />
+</div>
 
-  <table>
- <tr *ngIf="alunos.length > 0">
+<div>
+  <label htmlFor="email_input">E-mail</label>
+  <input name="email" required [(ngModel)]="aluno.email" id="email_input" />
+</div>
+
+<button type="submit">Cadastrar</button>
+</form>
+
+<p role="alert" *ngIf="errorMessage">{{errorMessage}}</p>
+
+<table>
+  <tr *ngIf="alunos.length > 0">
     <th>Nome</th>
     <th>CPF</th>
     <th>e-mail</th>
- </tr>
- <tr *ngFor="let a of alunos" name="alunolist">
-    <td name="nomelist">{{a.nome}}</td>
-    <td name="cpflist">{{a.cpf}}</td>
-    <td>{{a.email}}</td>
- </tr>
- </table>
-
-  </html>
+  </tr>
+  <tr *ngFor="let a of alunos" name="alunolist">
+    <td name="nomelist">{{ a.nome }}</td>
+    <td name="cpflist">{{ a.cpf }}</td>
+    <td name="email">{{ a.email }}</td>
+  </tr>
+</table>

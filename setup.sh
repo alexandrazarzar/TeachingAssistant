@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # install node dependencies on each module
-(cd common; npm install)
-(cd ta-gui; npm install)
-(cd ta-server; npm install)
+(cd common; npm ci)
+(cd ta-gui; npm ci)
+(cd ta-server; npm ci)
+(cd tests-acceptance; npm ci)

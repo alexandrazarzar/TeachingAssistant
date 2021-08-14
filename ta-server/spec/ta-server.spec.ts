@@ -1,58 +1,69 @@
 import request = require("request-promise");
-import { closeServer } from '../ta-server';
+import { Aluno } from "../../common/aluno";
 
 var base_url = "http://localhost:3000/";
 
 describe("O servidor", () => {
-  var server:any;
+  var server: any;
 
-  beforeAll(() => {server = require('../ta-server')});
-
-  afterAll(() => {server.closeServer()});
-
-  it("inicialmente retorna uma lista de alunos vazia", () => {
-    return request.get(base_url + "alunos")
-            .then(body => 
-               expect(body).toBe("[]")
-             )
-            .catch(e => 
-               expect(e).toEqual(null)
-             );
-  })
-
-  it("só cadastra alunos", () => {
-    var options:any = {method: 'POST', uri: (base_url + "aluno"), body:{name: "Mari", cpf: "962"}, json: true};
-    return request(options)
-             .then(body =>
-                expect(body).toEqual({failure: "O aluno não pode ser cadastrado"})
-             ).catch(e =>
-                expect(e).toEqual(null)
-             )
+  beforeAll(() => {
+    server = require("../ta-server");
   });
 
+  afterAll(() => {
+    server.closeServer();
+  });
 
-  it("não cadastra alunos com CPF duplicado", () => {
-    var aluno1 = {"json":{"nome": "Mari", "cpf" : "965", "email":""}};
-    var aluno2 = {"json":{"nome": "Pedro", "cpf" : "965", "email":""}};
-    var resposta1 = '{"nome":"Mari","cpf":"965","email":"","metas":{}}';
-    var resposta2 = '{"nome":"Pedro","cpf":"965","email":"","metas":{}}';
+  it("inicialmente retorna uma lista de alunos vazia", async () => {
+    const body = await request.get(`${base_url}alunos`, { json: true });
+    expect(body).toEqual([]);
+  });
 
-    return request.post(base_url + "aluno", aluno1)
-             .then(body => {
-                expect(body).toEqual({success: "O aluno foi cadastrado com sucesso"});
-                return request.post(base_url + "aluno", aluno2)
-                         .then(body => {
-                            expect(body).toEqual({failure: "O aluno não pode ser cadastrado"});
-                            return request.get(base_url + "alunos")
-                                     .then(body => {
-                                        expect(body).toContain(resposta1);
-                                        expect(body).not.toContain(resposta2);
-                                      });
-                          });
-              })
-              .catch(err => {
-                 expect(err).toEqual(null)
-              });
- })
+  it("só cadastra alunos", async () => {
+    const aluno = {
+      nome: "Joao Pedro",
+      cpf: "38387348074",
+      email: "joao@email.com",
+    };
 
-})
+    const response = await request.post(`${base_url}alunos`, {
+      body: aluno,
+      json: true,
+    });
+    expect(response).toEqual({ success: "Aluno cadastrado com sucesso" });
+
+    const listaAlunos = await request.get(`${base_url}alunos`, { json: true });
+    expect(listaAlunos).toContain(aluno);
+  });
+
+  it("não cadastra alunos com CPF duplicado", async () => {
+    const aluno1 = {
+      nome: "Joao Pedro",
+      cpf: "75270336065",
+      email: "joao@email.com",
+    };
+
+    await request.post(`${base_url}alunos`, {
+      body: aluno1,
+      json: true,
+    });
+
+    const aluno2 = {
+      nome: "Edlamar",
+      cpf: "75270336065",
+      email: "edlamar@email.com",
+    };
+
+    const response = await request.post(`${base_url}alunos`, {
+      body: aluno2,
+      json: true,
+    });
+    expect(response).toEqual({
+      failure: "Aluno não cadastrado. CPF duplicado",
+    });
+
+    const listaAlunos = await request.get(`${base_url}alunos`, { json: true });
+    expect(listaAlunos).toContain(aluno1);
+    expect(listaAlunos).not.toContain(aluno2);
+  });
+});
