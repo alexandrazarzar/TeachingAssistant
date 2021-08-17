@@ -1,4 +1,5 @@
 import { defineSupportCode } from "cucumber";
+import { browser, $, by, element } from "protractor";
 let chai = require("chai").use(require("chai-as-promised"));
 let expect = chai.expect;
 import request = require("request-promise");
@@ -27,5 +28,55 @@ defineSupportCode(function ({ Given, When, Then }) {
     await request.post(`${SERVER_URL}/alunos`, { json: true, body });
     const studentList = await request.get(`${SERVER_URL}/alunos`, { json: true });
     expect(studentList.some((value) => value.cpf == cpf && value.nome == nome && value.email == email)).to.equal(true);
+  });
+
+  Given(/^I am at the students page$/, async () => {
+    await browser.get("http://localhost:4200/");
+    await expect(browser.getTitle()).to.eventually.equal('TaGui');
+    await $("a[name='alunos']").click();
+  })
+
+  Given(/^I cannot see "([^\"]*)" with CPF "(\d*)" and email "([^\"]*)" in the students list$/, async (name, cpf, email) => {
+    const alunos = await element.all(by.name('alunolist'))
+      .map(async (linhaAluno) => {
+        return {
+          cpf: await linhaAluno.element(by.name('cpflist')).getText(),
+          name: await linhaAluno.element(by.name('nomelist')).getText(),
+          email: await linhaAluno.element(by.name('email')).getText()
+        }
+      }) as {cpf: string, name: string, email: string}[]
+
+    expect(alunos.some(aluno => aluno.cpf == cpf && aluno.name == name && aluno.email == email)).to.equal(false);
+  });
+
+  When(/^I try to register the student "([^\"]*)" with CPF "(\d*)" and email "([^\"]*)"$/, async (name, cpf, email) => {
+      await $("input[name='nome']").sendKeys(name as string);
+      await $("input[name='cpf']").sendKeys(cpf as string);
+      await $("input[name='email']").sendKeys(email as string);
+      await element(by.buttonText('Cadastrar')).click();
+  });
+
+  Given(/^I can see "([^\"]*)" with CPF "(\d*)" and email "([^\"]*)" in the students list$/, async (name, cpf, email) => {
+    await $("input[name='nome']").sendKeys(name as string);
+    await $("input[name='cpf']").sendKeys(cpf as string);
+    await $("input[name='email']").sendKeys(email as string);
+    await element(by.buttonText('Cadastrar')).click();
+
+    const alunos = await element.all(by.name('alunolist'))
+      .map(async (linhaAluno) => {
+        return {
+          cpf: await linhaAluno.element(by.name('cpflist')).getText(),
+          name: await linhaAluno.element(by.name('nomelist')).getText(),
+          email: await linhaAluno.element(by.name('email')).getText(),
+        } 
+      }) as {cpf: string, name: string, email: string}[]
+
+    expect(alunos.some(aluno => aluno.cpf == cpf && aluno.name == name && aluno.email == email)).to.equal(true);
+  });
+
+  Then(/^I can see an error message$/, async () => {
+    const errorMessage = await element.all(by.name('errorMessage'))
+
+    expect(errorMessage.length).to.equal(1)
   });
 });

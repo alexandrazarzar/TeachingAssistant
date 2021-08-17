@@ -35,13 +35,13 @@ export class AlunosComponent implements OnInit, OnDestroy {
     this.errorMessage = "";
     this.alunoService.cadastrar(aluno).subscribe({
       next: (aluno) => {
-        console.log("aaa");
         this.alunos.push(aluno);
         this.aluno = { nome: "", cpf: "", email: "" };
       },
       error: (error) => {
         this.errorMessage = error.message;
-      },
+        this.aluno = { nome: "", cpf: "", email: "" };
+      }
     });
   }
 }

@@ -17,7 +17,7 @@
 <button type="submit">Cadastrar</button>
 </form>
 
-<p role="alert" *ngIf="errorMessage">{{errorMessage}}</p>
+<p role="alert" name="errorMessage" *ngIf="errorMessage">{{errorMessage}}</p>
 
 <table>
   <tr *ngIf="alunos.length > 0">
