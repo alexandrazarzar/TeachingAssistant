@@ -26,3 +26,15 @@ Scenario: Registering student with already registered CPF, service
   When I register the student "Paulo" with CPF "50754513491" and email "paulo@cin.ufpe.br"
   Then The system has no student with CPF "50754513491" and name "Paulo"
   And The system stores "Jose" with CPF "50754513491" and email "jose@cin.ufpe.br"
+
+Scenario: Registering student with invalid CPF, service
+  Given The system has no student with CPF "12345678910" and name "Maria"
+  When I register the student "Maria" with CPF "12345678910" and email "maria@cin.ufpe.br"
+  Then The system has no student with CPF "12345678910" and name "Maria"
+
+Scenario: Registering student with invalid CPF
+  Given I am at the students page
+  And I cannot see "Luis" with CPF "12345678910" and email "luis@cin.ufpe.br" in the students list
+  When I try to register the student "Luis" with CPF "12345678910" and email "luis@cin.ufpe.br"
+  Then I can see an error message
+  And I cannot see "Luis" with CPF "12345678910" and email "luis@cin.ufpe.br" in the students list

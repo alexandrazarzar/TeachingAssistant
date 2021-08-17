@@ -59,11 +59,30 @@ describe("O servidor", () => {
       json: true,
     });
     expect(response).toEqual({
-      failure: "Aluno não cadastrado. CPF duplicado",
+      failure: "Aluno não cadastrado.",
     });
 
     const listaAlunos = await request.get(`${base_url}alunos`, { json: true });
     expect(listaAlunos).toContain(aluno1);
     expect(listaAlunos).not.toContain(aluno2);
+  });
+
+  it("não cadastra alunos com CPF inválido", async () => {
+    const aluno = {
+      nome: "Edlamar",
+      cpf: "12345678910",
+      email: "edlamar@email.com",
+    };
+
+    const response = await request.post(`${base_url}alunos`, {
+      body: aluno,
+      json: true,
+    });
+    expect(response).toEqual({
+      failure: "Aluno não cadastrado.",
+    });
+
+    const listaAlunos = await request.get(`${base_url}alunos`, { json: true });
+    expect(listaAlunos).not.toContain(aluno);
   });
 });

@@ -26,7 +26,7 @@ taserver.post("/alunos", function (req, res) {
   if (resposta) {
     return res.json({ success: "Aluno cadastrado com sucesso" });
   }
-  res.json({ failure: "Aluno não cadastrado. CPF duplicado" });
+  res.json({ failure: "Aluno não cadastrado." });
 });
 
 var server = taserver.listen(3000, function () {

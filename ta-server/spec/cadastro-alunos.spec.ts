@@ -27,4 +27,12 @@ describe("O cadastro de alunos", () => {
     expect(cadastro.getAlunos()).toContain(aluno1);
     expect(cadastro.getAlunos()).not.toContain(aluno2);
   });
+
+  it("não cadastra alunos com CPF inválido", () => {
+    const aluno = new Aluno("Joao Pedro", "12345678910", "joao@email.com");
+
+    cadastro.cadastrar(aluno);
+
+    expect(cadastro.getAlunos()).not.toContain(aluno);
+  });
 });
