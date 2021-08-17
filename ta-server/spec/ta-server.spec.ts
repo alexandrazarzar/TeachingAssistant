@@ -23,7 +23,7 @@ describe("O servidor", () => {
     const aluno = {
       nome: "Joao Pedro",
       cpf: "38387348074",
-      email: "joao@email.com",
+      email: "joao@cin.ufpe.br",
     };
 
     const response = await request.post(`${base_url}alunos`, {
@@ -40,7 +40,7 @@ describe("O servidor", () => {
     const aluno1 = {
       nome: "Joao Pedro",
       cpf: "75270336065",
-      email: "joao@email.com",
+      email: "joao@cin.ufpe.br",
     };
 
     await request.post(`${base_url}alunos`, {
@@ -51,7 +51,7 @@ describe("O servidor", () => {
     const aluno2 = {
       nome: "Edlamar",
       cpf: "75270336065",
-      email: "edlamar@email.com",
+      email: "edlamar@cin.ufpe.br",
     };
 
     const response = await request.post(`${base_url}alunos`, {
@@ -71,7 +71,26 @@ describe("O servidor", () => {
     const aluno = {
       nome: "Edlamar",
       cpf: "12345678910",
-      email: "edlamar@email.com",
+      email: "edlamar@cin.ufpe.br",
+    };
+
+    const response = await request.post(`${base_url}alunos`, {
+      body: aluno,
+      json: true,
+    });
+    expect(response).toEqual({
+      failure: "Aluno não cadastrado.",
+    });
+
+    const listaAlunos = await request.get(`${base_url}alunos`, { json: true });
+    expect(listaAlunos).not.toContain(aluno);
+  });
+
+  it("não cadastra alunos com email que não seja do CIn", async () => {
+    const aluno = {
+      nome: "Edlamar",
+      cpf: "73410777008",
+      email: "edlamar@gmail.com",
     };
 
     const response = await request.post(`${base_url}alunos`, {

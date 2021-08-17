@@ -38,3 +38,15 @@ Scenario: Registering student with invalid CPF
   When I try to register the student "Luis" with CPF "12345678910" and email "luis@cin.ufpe.br"
   Then I can see an error message
   And I cannot see "Luis" with CPF "12345678910" and email "luis@cin.ufpe.br" in the students list
+
+Scenario: Registering student with email not from CIn, service
+  Given The system has no student with CPF "12345678910" and name "Maria"
+  When I register the student "Maria" with CPF "12345678910" and email "maria@gmail.com"
+  Then The system has no student with CPF "12345678910" and name "Maria"
+
+Scenario: Registering student with email not from CIn
+  Given I am at the students page
+  And I cannot see "Jose" with CPF "70446531030" and email "jose.com.br" in the students list
+  When I try to register the student "Jose" with CPF "70446531030" and email "maria@gmail.com"
+  Then I can see an error message
+  And I cannot see "Jose" with CPF "70446531030" and email "jose.com.br" in the students list
