@@ -29,6 +29,18 @@ taserver.post("/alunos", function (req, res) {
   res.json({ failure: "Aluno não cadastrado." });
 });
 
+taserver.put("/alunos", function (req, res) {
+  const theBody = req.body;
+  const aluno = theBody.Aluno;
+  const cpf = theBody.CPF;
+  const resposta = cadastro.atualizar(aluno, cpf);
+
+  if (resposta) {
+    return res.json({ success: "Aluno cadastrado com sucesso" });
+  }
+  res.json({ failure: "Aluno não cadastrado." });
+});
+
 var server = taserver.listen(3000, function () {
   console.log("Example app listening on port 3000!");
 });

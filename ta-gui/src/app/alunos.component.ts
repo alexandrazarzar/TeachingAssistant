@@ -11,6 +11,7 @@ import { AlunoService } from "./aluno.service";
 export class AlunosComponent implements OnInit, OnDestroy {
   aluno: Aluno = { nome: "", cpf: "", email: "" };
   errorMessage: string = "";
+  cpfAluno: string = "";
   alunos: Aluno[] = [];
   alunosSubscription: Subscription;
 
@@ -43,5 +44,23 @@ export class AlunosComponent implements OnInit, OnDestroy {
         this.aluno = { nome: "", cpf: "", email: "" };
       }
     });
+  }
+
+  atualizarAluno(aluno: Aluno): void {
+    let cpf = (document.getElementById("new_cpf_input") as HTMLInputElement).value;
+    let alunoNew: Aluno = new Aluno(aluno.nome, cpf, aluno.email);
+    this.alunoService.atualizar(alunoNew, this.cpfAluno).subscribe({
+      next: (alunoNew) => {
+        this.cpfAluno = "";      
+        aluno.cpf = cpf;
+      },
+      error: (error) => {
+        this.errorMessage = error.message;
+      }
+    });
+
+  }
+  editarAluno(aluno: Aluno): void{
+    this.cpfAluno = aluno.cpf;
   }
 }

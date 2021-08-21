@@ -24,6 +24,16 @@ export class CadastroAlunos {
     return aluno;
   }
 
+  atualizar(aluno: Aluno, cpf: string): Aluno | null {
+    var alunoASerAtualizado: Aluno = this.alunos.find(a => a.cpf === cpf);
+    if (!this.cpfInvalido(aluno.cpf) && !this.emailInvalido(aluno.email) && (aluno.nome !== "")){
+      alunoASerAtualizado.nome = aluno.nome;
+      alunoASerAtualizado.cpf = aluno.cpf;
+      alunoASerAtualizado.email = aluno.email
+    }
+    return alunoASerAtualizado
+  }
+
   private cpfInvalido(cpf: string) {
     let soma = 0;
     let resto = 0;
