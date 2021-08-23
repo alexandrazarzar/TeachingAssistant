@@ -11,8 +11,9 @@ import { AlunoService } from "./aluno.service";
 export class AlunosComponent implements OnInit, OnDestroy {
   aluno: Aluno = { nome: "", cpf: "", email: "" };
   errorMessage: string = "";
-  cpfAluno: string = "";
   alunos: Aluno[] = [];
+  cpfAluno: string = "";
+  newAluno: Aluno;
   alunosSubscription: Subscription;
 
   constructor(private readonly alunoService: AlunoService) {}
@@ -47,10 +48,12 @@ export class AlunosComponent implements OnInit, OnDestroy {
   }
 
   atualizarAluno(aluno: Aluno): void {
-    let cpf = (document.getElementById("new_cpf_input") as HTMLInputElement).value;
-    let alunoNew: Aluno = new Aluno(aluno.nome, cpf, aluno.email);
-    this.alunoService.atualizar(alunoNew, this.cpfAluno).subscribe({
-      next: (alunoNew) => {
+    let newCPF = (document.getElementById("new_cpf_input") as HTMLInputElement).value;
+    this.newAluno.nome = aluno.nome;
+    this.newAluno.cpf = newCPF;
+    this.newAluno.email = aluno.email;
+    this.alunoService.atualizar(this.newAluno, this.cpfAluno).subscribe({
+      next: (cpf) => {
         this.cpfAluno = "";      
         aluno.cpf = cpf;
       },
@@ -61,6 +64,6 @@ export class AlunosComponent implements OnInit, OnDestroy {
 
   }
   editarAluno(aluno: Aluno): void{
-    this.cpfAluno = aluno.cpf;
+    this.cpfAluno = aluno.cpf as string;
   }
 }
