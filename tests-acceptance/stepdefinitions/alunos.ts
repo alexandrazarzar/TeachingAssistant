@@ -66,10 +66,13 @@ defineSupportCode(function ({ Given, When, Then }) {
   // atualizar (GUI)
   When(/^I try to update "([^\"]*)" whose CPF is "(\d*)" to "([^\"]*)" with CPF "(\d*)" and email "([^\"]*)"$/, async (nomeInicial, cpfInicial, nome, cpf, email) => {
     await element(by.name('edit_button_' + cpfInicial)).click();
-      await $("input[name='newNome']").sendKeys(nome as string);
-      await $("input[name='newCpf']").sendKeys(cpf as string);
-      await $("input[name='newEmail']").sendKeys(email as string);
-      await element(by.name('update_button')).click();
+    await $("input[name='newNome']").clear();
+    await $("input[name='newNome']").sendKeys(nome as string);
+    await $("input[name='newCpf']").clear();
+    await $("input[name='newCpf']").sendKeys(cpf as string);
+    await $("input[name='newEmail']").clear();
+    await $("input[name='newEmail']").sendKeys(email as string);
+    await element(by.name('update_button')).click();
   });
 
   Given(/^I can see "([^\"]*)" with CPF "(\d*)" and email "([^\"]*)" in the students list$/, async (name, cpf, email) => {
