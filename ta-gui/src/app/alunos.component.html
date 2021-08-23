@@ -31,13 +31,13 @@
       <td name="nomelist">{{ a.nome }}</td>
       <td name="cpflist">{{ a.cpf }}</td>
       <td name="email">{{ a.email }}</td>
-      <button type="submit" (click) = "editarAluno(a)" >Editar</button>
+      <button name="edit_button_{{a.cpf}}" type="submit" (click) = "editarAluno(a)" >Editar</button>
     </ng-template>
     <ng-template #elseBlock>
       <td name="nomelist"><input name = "newNome"required [(ngModel)]="a.nome" id="new_nome_input" value="a.nome"></td>
       <td name="cpflist"><input name = "newCpf"required  id="new_cpf_input" value="{{a.cpf}}"></td>
       <td name="email"><input name = "newEmail"required [(ngModel)]="a.email" id="new_email_input" value="a.email"></td>
-      <button type="submit" (click) = "atualizarAluno(a)" >Atualizar</button>
+      <button name="update_button" type="submit" (click) = "atualizarAluno(a)" >Atualizar</button>
     </ng-template>
   </tr>
 </table>

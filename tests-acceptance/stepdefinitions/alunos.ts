@@ -18,6 +18,13 @@ defineSupportCode(function ({ Given, When, Then }) {
     expect(response).to.have.any.keys('success', 'failure');
   });
 
+  // atualizar (servidor)
+  When(/^I update "([^\"]*)" whose CPF is "(\d*)" to "([^\"]*)" with CPF "(\d*)" and email "([^\"]*)"$/, async (nomeInicial, cpfInicial, nome, cpf, email) => {
+    const body = {Aluno: { nome, cpf, email }, CPF: cpfInicial};
+    const response = await request.put(`${SERVER_URL}/alunos`, { json: true, body });
+    expect(response).to.have.any.keys('success', 'failure');
+  });
+
   Then(/^The system stores "([^\"]*)" with CPF "(\d*)" and email "([^\"]*)"$/, async (nome, cpf, email) => {
     const response = await request.get(`${SERVER_URL}/alunos`, { json: true });
     expect(response.some((value) => value.cpf == cpf && value.nome == nome && value.email == email)).to.equal(true);
@@ -54,6 +61,15 @@ defineSupportCode(function ({ Given, When, Then }) {
       await $("input[name='cpf']").sendKeys(cpf as string);
       await $("input[name='email']").sendKeys(email as string);
       await element(by.buttonText('Cadastrar')).click();
+  });
+
+  // atualizar (GUI)
+  When(/^I try to update "([^\"]*)" whose CPF is "(\d*)" to "([^\"]*)" with CPF "(\d*)" and email "([^\"]*)"$/, async (nomeInicial, cpfInicial, nome, cpf, email) => {
+    await element(by.name('edit_button_' + cpfInicial)).click();
+      await $("input[name='newNome']").sendKeys(nome as string);
+      await $("input[name='newCpf']").sendKeys(cpf as string);
+      await $("input[name='newEmail']").sendKeys(email as string);
+      await element(by.name('update_button')).click();
   });
 
   Given(/^I can see "([^\"]*)" with CPF "(\d*)" and email "([^\"]*)" in the students list$/, async (name, cpf, email) => {

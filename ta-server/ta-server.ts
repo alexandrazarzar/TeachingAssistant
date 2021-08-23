@@ -36,9 +36,9 @@ taserver.put("/alunos", function (req, res) {
   const resposta = cadastro.atualizar(aluno, cpf);
 
   if (resposta) {
-    return res.json({ success: "Aluno cadastrado com sucesso" });
+    return res.json({ success: "Aluno atualizado com sucesso" });
   }
-  res.json({ failure: "Aluno não cadastrado." });
+  res.json({ failure: "Aluno não atualizado." });
 });
 
 var server = taserver.listen(3000, function () {
