@@ -166,7 +166,7 @@ describe("O servidor", () => {
       body: {Aluno: aluno1ComCpfDuplicado, CPF: aluno1.cpf},
       json: true,
     });
-    expect(response3).toEqual({ failure: "Aluno não atualizado." });
+    expect(response3).toEqual({ failure: "Erro ao atualizar aluno: dados inválidos ou duplicados. Tente novamente." });
 
     const listaAlunos = await request.get(`${base_url}alunos`, { json: true });
     expect(listaAlunos).toContain(aluno1);
@@ -195,7 +195,7 @@ describe("O servidor", () => {
       body: {Aluno: alunoFinal, CPF: alunoInicial.cpf},
       json: true,
     });
-    expect(response2).toEqual({ failure: "Aluno não atualizado." });
+    expect(response2).toEqual({ failure: "Erro ao atualizar aluno: dados inválidos ou duplicados. Tente novamente." });
 
     const listaAlunos = await request.get(`${base_url}alunos`, { json: true });
     expect(listaAlunos).toContain(alunoInicial);
@@ -224,7 +224,7 @@ describe("O servidor", () => {
       body: {Aluno: alunoFinal, CPF: alunoInicial.cpf},
       json: true,
     });
-    expect(response2).toEqual({ failure: "Aluno não atualizado." });
+    expect(response2).toEqual({ failure: "Erro ao atualizar aluno: dados inválidos ou duplicados. Tente novamente." });
 
     const listaAlunos = await request.get(`${base_url}alunos`, { json: true });
     expect(listaAlunos).toContain(alunoInicial);

@@ -38,7 +38,7 @@ taserver.put("/alunos", function (req, res) {
   if (resposta) {
     return res.json({ success: "Aluno atualizado com sucesso" });
   }
-  res.json({ failure: "Aluno não atualizado." });
+  res.json({ failure: "Erro ao atualizar aluno: dados inválidos ou duplicados. Tente novamente." });
 });
 
 var server = taserver.listen(3000, function () {
