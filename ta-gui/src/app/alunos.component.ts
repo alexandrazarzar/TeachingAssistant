@@ -47,15 +47,21 @@ export class AlunosComponent implements OnInit, OnDestroy {
   }
 
   atualizarAluno(aluno: Aluno): void {
-    let cpf = (document.getElementById("new_cpf_input") as HTMLInputElement).value;
-    let alunoNew: Aluno = new Aluno(aluno.nome, cpf, aluno.email);
+    let nome  = (document.getElementById("new_nome_input") as HTMLInputElement).value;
+    let cpf   = (document.getElementById("new_cpf_input") as HTMLInputElement).value;
+    let email = (document.getElementById("new_email_input") as HTMLInputElement).value;
+    let alunoNew: Aluno = new Aluno(nome, cpf, email);
+
     this.alunoService.atualizar(alunoNew, this.cpfAluno).subscribe({
       next: (alunoNew) => {
-        this.cpfAluno = "";      
+        this.cpfAluno = "";
+        aluno.nome = nome;
         aluno.cpf = cpf;
+        aluno.email = email;
       },
       error: (error) => {
         this.errorMessage = error.message;
+        this.cpfAluno = "";
       }
     });
   }

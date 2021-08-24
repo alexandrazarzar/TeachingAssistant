@@ -7,7 +7,7 @@ Scenario: Successful student update.
   Given I am at the students page
   And I can see "Luis" with CPF "31953028020" and email "luis@cin.ufpe.br" in the students list
   When I try to update "Luis" whose CPF is "31953028020" to "Luis" with CPF "94701094064" and email "luis@cin.ufpe.br"
-  Then I can see "Luis" with CPF "94701094064" and email "luis@cin.ufpe.br"
+  Then I can see "Luis" with CPF "94701094064" and email "luis@cin.ufpe.br" in the students list
 
 Scenario: Unsuccessful student update due to duplicated CPF.
   Given I am at the students page
