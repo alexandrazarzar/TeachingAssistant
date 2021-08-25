@@ -26,15 +26,11 @@ export class CadastroAlunos {
 
   atualizar(aluno: Aluno, cpf: string): Aluno | null {
     var alunoASerAtualizado: Aluno = this.alunos.find(a => a.cpf === cpf);
-    if (aluno.cpf === cpf || !this.alunos.find((a) => a.cpf === aluno.cpf)){
-    if (!this.cpfInvalido(aluno.cpf) && !this.emailInvalido(aluno.email) && (aluno.nome !== "")){
-      alunoASerAtualizado.nome = aluno.nome;
-      alunoASerAtualizado.cpf = aluno.cpf;
-      alunoASerAtualizado.email = aluno.email;
+    if (this.cpfNaoDuplicado(aluno, cpf) && this.dadosValidos(aluno)){
+      this.atualizarDados(alunoASerAtualizado, aluno);
       return alunoASerAtualizado;
-    }
   }
-    return null
+    return null;
   }
 
   private cpfInvalido(cpf: string) {
@@ -48,7 +44,7 @@ export class CadastroAlunos {
     if (resto == 10 || resto == 11) {
       resto = 0;
     }
-    if (resto != parseInt(cpf.substring(9, 10))) {
+    if (resto != parseInt(cpf.substring(9, 10)) || (cpf.length > 11)) {
       return true;
     }
 
@@ -63,6 +59,21 @@ export class CadastroAlunos {
   }
 
   private emailInvalido(email: string) {
-    return !email.endsWith('@cin.ufpe.br')
+    return !email.endsWith('@cin.ufpe.br');
   }
+
+  private dadosValidos(aluno: Aluno) {
+    return (!this.cpfInvalido(aluno.cpf) && !this.emailInvalido(aluno.email) && (aluno.nome !== ""));
+  }
+
+  private cpfNaoDuplicado(aluno: Aluno, cpf: string) {
+    return(aluno.cpf === cpf || !this.alunos.find((a) => a.cpf === aluno.cpf))
+  }
+
+  private atualizarDados(alunoInicial: Aluno, alunoFinal: Aluno){
+    alunoInicial.nome = alunoFinal.nome;
+    alunoInicial.cpf = alunoFinal.cpf;
+    alunoInicial.email = alunoFinal.email;
+  }
+
 }
